@@ -68,6 +68,8 @@ def run_experiment(args, func, mode="max", metric="average_res",
     print("Error file has been saved at " + error_name + " .")
 
 
+
+
 # def yield_trials(args, func, mode="max", metric="average_res",
 #                           ray_dir="/lus/theta-fs0/projects/CVD-Mol-AI/mzvyagin/ray_results"):
 #     """Yields trials to be passed"""
