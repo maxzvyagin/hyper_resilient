@@ -13,7 +13,8 @@ def get_trials(args):
     # load hyperspace boundaries from json file
     try:
         f = open(args.json, "r")
-    except:
+    except Exception as e:
+        print(e)
         print("ERROR: json file with hyperparameter bounds not found. Please use utilities/generate_hyperspace_json.py "
               "to generate boundary file and try again.")
         sys.exit()
@@ -66,10 +67,3 @@ def run_experiment(args, func, mode="max", metric="average_res",
     all_pt_results.to_csv(args.out)
     print("Ray Tune results have been saved at " + args.out + " .")
     print("Error file has been saved at " + error_name + " .")
-
-
-
-
-# def yield_trials(args, func, mode="max", metric="average_res",
-#                           ray_dir="/lus/theta-fs0/projects/CVD-Mol-AI/mzvyagin/ray_results"):
-#     """Yields trials to be passed"""
