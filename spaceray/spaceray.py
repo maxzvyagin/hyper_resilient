@@ -42,7 +42,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
         optimizer = Optimizer(section)
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
         try:
-            analysis = tune.run(func, search_alg=search_algo, num_samples=args.trials,
+            analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
                                 resources_per_trial={'cpu': 25, 'gpu': 1},
                                 local_dir=ray_dir)
             results.append(analysis)
