@@ -30,7 +30,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
                           ray_dir="/lus/theta-fs0/projects/CVD-Mol-AI/mzvyagin/ray_results"):
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
-    ray.init()
+    ray.init('localhost:6379')
     space, bounds = get_trials(args)
     # Run and aggregate the results
     results = []
