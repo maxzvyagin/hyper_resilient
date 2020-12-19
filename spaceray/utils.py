@@ -48,3 +48,4 @@ def create_json():
         f.close()
         print("Wrote json bounds file to " + output + ". Exiting.")
         return
+

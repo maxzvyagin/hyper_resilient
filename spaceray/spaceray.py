@@ -27,10 +27,14 @@ def get_trials(args):
 
 
 def run_experiment(args, func, mode="max", metric="average_res",
-                          ray_dir="/lus/theta-fs0/projects/CVD-Mol-AI/mzvyagin/ray_results"):
+                          ray_dir="~/ray_results/"):
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
-    ray.init('localhost:6379')
+    # try:
+    #     ray.init(address="auto")
+    # except:
+    #     print("WARNING: could not connect to existing Ray Cluster. Ignore warning if only running on single node.")
+    ray.init()
     space, bounds = get_trials(args)
     # Run and aggregate the results
     results = []
