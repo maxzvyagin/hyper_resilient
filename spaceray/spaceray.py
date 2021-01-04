@@ -27,7 +27,7 @@ def get_trials(args):
 
 
 def run_experiment(args, func, mode="max", metric="average_res",
-                          ray_dir="~/ray_results/"):
+                          ray_dir="~/ray_results/", cpu=25, gpu=1):
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
     # try:
@@ -38,18 +38,21 @@ def run_experiment(args, func, mode="max", metric="average_res",
     space, bounds = get_trials(args)
     # Run and aggregate the results
     results = []
+    sk_optimizer_results = []
     i = 0
     error_name = args.out.split(".csv")[0]
     error_name += "_error.txt"
     error_file = open(error_name, "w")
     for section in tqdm(space):
-        optimizer = Optimizer(section)
+        optimizer = Optimizer(section, random_state=0)
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
         try:
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
-                                resources_per_trial={'cpu': 25, 'gpu': 1},
+                                resources_per_trial={'cpu': cpu, 'gpu': gpu},
                                 local_dir=ray_dir)
             results.append(analysis)
+            #sk_optimizer_results.append(optimizer.get_result())
+            sk_optimizer_results.append(search_algo.optimizer_results)
         except Exception as e:
             error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
             error_file.write(str(e))
@@ -71,3 +74,5 @@ def run_experiment(args, func, mode="max", metric="average_res",
     all_pt_results.to_csv(args.out)
     print("Ray Tune results have been saved at " + args.out + " .")
     print("Error file has been saved at " + error_name + " .")
+
+    return sk_optimizer_results
