@@ -32,6 +32,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
     start_time = time.time()
     try:
         ray.init(address="auto")
+        print("Started ray with auto address.")
     except:
         try:
             ray.init()
