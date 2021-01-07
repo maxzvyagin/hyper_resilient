@@ -35,6 +35,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
     except:
         try:
             ray.init()
+            print("Started ray without auto address.")
         except:
             print("Ray.init failed twice.")
         print("WARNING: could not connect to existing Ray Cluster. Ignore warning if only running on single node.")
