@@ -30,11 +30,15 @@ def run_experiment(args, func, mode="max", metric="average_res",
                           ray_dir="~/ray_results/", cpu=25, gpu=1):
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
-    # try:
-    #     ray.init(address="auto")
-    # except:
-    #     print("WARNING: could not connect to existing Ray Cluster. Ignore warning if only running on single node.")
-    ray.init()
+    try:
+        ray.init(address="auto")
+    except:
+        try:
+            ray.init()
+        except:
+            print("Ray.init failed twice.")
+        print("WARNING: could not connect to existing Ray Cluster. Ignore warning if only running on single node.")
+    # ray.init()
     space, bounds = get_trials(args)
     # Run and aggregate the results
     results = []
