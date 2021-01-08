@@ -48,22 +48,39 @@ def run_experiment(args, func, mode="max", metric="average_res",
     error_name = args.out.split(".csv")[0]
     error_name += "_error.txt"
     error_file = open(error_name, "w")
-    for section in tqdm(space):
-        optimizer = Optimizer(section, random_state=0)
-        search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
-        try:
-            analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
-                                resources_per_trial={'cpu': cpu, 'gpu': gpu},
-                                local_dir=ray_dir, time_budget_s=int((12*60*60)/len(space)))
-            results.append(analysis)
-            #sk_optimizer_results.append(optimizer.get_result())
-            sk_optimizer_results.append(search_algo.optimizer_results)
-        except Exception as e:
-            error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
-            error_file.write(str(e))
-            error_file.write("\n\n")
-            print("Unable to complete trials in space " + str(i) + "... Continuing with other trials.")
-        i += 1
+    # for section in tqdm(space):
+    #     optimizer = Optimizer(section, random_state=0)
+    #     search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
+    #     try:
+    #         analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
+    #                             resources_per_trial={'cpu': cpu, 'gpu': gpu},
+    #                             local_dir=ray_dir, time_budget_s=int((12*60*60)/len(space)))
+    #         results.append(analysis)
+    #         #sk_optimizer_results.append(optimizer.get_result())
+    #         sk_optimizer_results.append(search_algo.optimizer_results)
+    #     except Exception as e:
+    #         error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
+    #         error_file.write(str(e))
+    #         error_file.write("\n\n")
+    #         print("Unable to complete trials in space " + str(i) + "... Continuing with other trials.")
+    #     i += 1
+
+    section = space[0]
+    optimizer = Optimizer(section, random_state=0)
+    search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
+    try:
+        analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
+                            resources_per_trial={'cpu': cpu, 'gpu': gpu},
+                            local_dir=ray_dir, time_budget_s=int((12*60*60)/len(space)))
+        results.append(analysis)
+        #sk_optimizer_results.append(optimizer.get_result())
+        sk_optimizer_results.append(search_algo.optimizer_results)
+    except Exception as e:
+        error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
+        error_file.write(str(e))
+        error_file.write("\n\n")
+        print("Unable to complete trials in space " + str(i) + "... Continuing with other trials.")
+    i += 1
 
     print("Measured time needed to run trials: ")
     execution_time = (time.time() - start_time)
