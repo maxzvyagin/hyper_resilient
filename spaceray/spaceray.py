@@ -43,7 +43,6 @@ def run_experiment(args, func, mode="max", metric="average_res",
     space, bounds = get_trials(args)
     # Run and aggregate the results
     results = []
-    sk_optimizer_results = []
     i = 0
     error_name = args.out.split(".csv")[0]
     error_name += "_error.txt"
@@ -56,8 +55,6 @@ def run_experiment(args, func, mode="max", metric="average_res",
     #                             resources_per_trial={'cpu': cpu, 'gpu': gpu},
     #                             local_dir=ray_dir, time_budget_s=int((12*60*60)/len(space)))
     #         results.append(analysis)
-    #         #sk_optimizer_results.append(optimizer.get_result())
-    #         sk_optimizer_results.append(search_algo.optimizer_results)
     #     except Exception as e:
     #         error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
     #         error_file.write(str(e))
@@ -74,7 +71,6 @@ def run_experiment(args, func, mode="max", metric="average_res",
                             local_dir=ray_dir, time_budget_s=int((12*60*60)/len(space)))
         results.append(analysis)
         #sk_optimizer_results.append(optimizer.get_result())
-        sk_optimizer_results.append(search_algo.optimizer_results)
     except Exception as e:
         error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
         error_file.write(str(e))
