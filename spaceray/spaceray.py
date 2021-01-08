@@ -32,7 +32,6 @@ def run_experiment(args, func, mode="max", metric="average_res",
     start_time = time.time()
     try:
         ray.init(address='auto', include_dashboard=False)
-        print("ray.init(address='auto', _redis_password='5241590000000000')")
     except:
         try:
             ray.init()
