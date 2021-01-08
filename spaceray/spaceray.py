@@ -92,5 +92,3 @@ def run_experiment(args, func, mode="max", metric="average_res",
     all_pt_results.to_csv(args.out)
     print("Ray Tune results have been saved at " + args.out + " .")
     print("Error file has been saved at " + error_name + " .")
-
-    return sk_optimizer_results
