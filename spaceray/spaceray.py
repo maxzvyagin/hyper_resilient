@@ -54,7 +54,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
         try:
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
                                 resources_per_trial={'cpu': cpu, 'gpu': gpu},
-                                local_dir=ray_dir)
+                                local_dir=ray_dir, time_budget_s=int((12*60*60)/len(space)))
             results.append(analysis)
             #sk_optimizer_results.append(optimizer.get_result())
             sk_optimizer_results.append(search_algo.optimizer_results)
