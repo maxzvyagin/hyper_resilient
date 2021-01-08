@@ -27,7 +27,7 @@ def get_trials(args):
 
 
 def run_experiment(args, func, mode="max", metric="average_res",
-                          ray_dir="/tmp/ray_results/", cpu=25, gpu=1):
+                          ray_dir="/tmp/ray_results/", cpu=8, gpu=1):
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
     try:
