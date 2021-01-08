@@ -67,7 +67,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
         try:
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
                                 resources_per_trial={'cpu': cpu, 'gpu': gpu},
-                                local_dir=ray_dir, time_budget_s=int((12*60*60)/len(space)))
+                                local_dir=ray_dir)
             results.append(analysis)
             df = analysis.results_df
             df.to_csv(args.out[:-4]+"/space"+str(i)+".csv")
