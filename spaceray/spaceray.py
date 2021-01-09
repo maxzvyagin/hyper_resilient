@@ -9,7 +9,7 @@ from tqdm import tqdm
 import sys
 import pandas as pd
 import os
-
+import pickle
 
 def get_trials(args):
     # load hyperspace boundaries from json file
@@ -70,7 +70,10 @@ def run_experiment(args, func, mode="max", metric="average_res",
                                 local_dir=ray_dir)
             results.append(analysis)
             df = analysis.results_df
-            df.to_csv(args.out[:-4]+"/space"+str(i)+".csv")
+            df.to_csv(intermediate_dir+"/space"+str(i)+".csv")
+            opt_result = optimizer.get_result()
+            f = open(intermediate_dir+"/optimizer_result"+str(i)+".pkl", "wb")
+            pickle.dump(opt_result, f)
         except Exception as e:
             error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
             error_file.write(str(e))
