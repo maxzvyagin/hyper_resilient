@@ -29,7 +29,7 @@ def get_trials(args):
 
 
 def run_experiment(args, func, mode="max", metric="average_res",
-                          ray_dir="/tmp/ray_results/", cpu=8, gpu=1):
+                          ray_dir="/tmp/ray_results/", cpu=8, gpu=1, start_space=None):
 
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
@@ -44,9 +44,12 @@ def run_experiment(args, func, mode="max", metric="average_res",
         print("WARNING: could not connect to existing Ray Cluster. Ignore warning if only running on single node.")
     # print(ray.cluster_resources())
     space, bounds = get_trials(args)
+    i = 0
+    if start_space:
+        space = space[start_space:]
+        i = start_space
     # Run and aggregate the results
     results = []
-    i = 0
     error_name = args.out.split(".csv")[0]
     error_name += "_error.txt"
     error_file = open(error_name, "w")
