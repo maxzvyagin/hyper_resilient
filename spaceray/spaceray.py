@@ -73,7 +73,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
                                 resources_per_trial={'cpu': cpu, 'gpu': gpu},
                                 local_dir=ray_dir, callbacks=[WandbLoggerCallback(
-                                    project="hyper_sensitive",
+                                    project="test_test",
                                     api_key="b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7",
                                     log_config=True)])
             results.append(analysis)
