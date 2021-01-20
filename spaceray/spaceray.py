@@ -10,6 +10,8 @@ import sys
 import pandas as pd
 import os
 import pickle
+from ray.tune.logger import DEFAULT_LOGGERS
+from ray.tune.integration.wandb import WandbLoggerCallback
 
 def get_trials(args):
     # load hyperspace boundaries from json file
@@ -70,7 +72,10 @@ def run_experiment(args, func, mode="max", metric="average_res",
         try:
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
                                 resources_per_trial={'cpu': cpu, 'gpu': gpu},
-                                local_dir=ray_dir)
+                                local_dir=ray_dir, callbacks=[WandbLoggerCallback(
+                                    project="hyper_sensitive",
+                                    api_key="b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7",
+                                    log_config=True)])
             results.append(analysis)
             df = analysis.results_df
             df.to_csv(intermediate_dir+"/space"+str(i)+".csv")
