@@ -75,7 +75,10 @@ def run_experiment(args, func, mode="max", metric="average_res",
                                 local_dir=ray_dir, callbacks=[WandbLoggerCallback(
                                     project="test_test",
                                     api_key="b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7",
-                                    log_config=True)])
+                                    log_config=True)],
+                                config={"wandb": {
+            "project": "test_test",
+            "api_key": "b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7"}})
             results.append(analysis)
             df = analysis.results_df
             df.to_csv(intermediate_dir+"/space"+str(i)+".csv")
