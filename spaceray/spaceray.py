@@ -31,7 +31,8 @@ def get_trials(args):
 
 
 def run_experiment(args, func, mode="max", metric="average_res",
-                          ray_dir="/tmp/ray_results/", cpu=8, gpu=1, start_space=None):
+                          ray_dir="/tmp/ray_results/", cpu=8, gpu=1, start_space=None,
+                   project_name='default_project', group_name='default_group'):
 
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
@@ -73,7 +74,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
                                 resources_per_trial={'cpu': cpu, 'gpu': gpu},
                                 local_dir=ray_dir, callbacks=[WandbLoggerCallback(
-                                    project="test_test",
+                                    project=project_name, group=group_name,
                                     api_key="b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7",
                                     log_config=True)],
                                 config={"wandb": {
