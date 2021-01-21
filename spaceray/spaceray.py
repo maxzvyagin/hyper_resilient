@@ -78,7 +78,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
                                     api_key="b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7",
                                     log_config=True)],
                                 config={"wandb": {
-            "project": "test_test",
+            "project": project_name,
             "api_key": "b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7"}})
             results.append(analysis)
             df = analysis.results_df
