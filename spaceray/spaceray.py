@@ -55,7 +55,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
     results = []
     error_name = args.out.split(".csv")[0]
     error_name += "_error.txt"
-    error_file = open(error_name, "w")
+    error_file = open(error_name, "w+")
 
     intermediate_dir = args.out[:-4]
 
@@ -84,7 +84,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
             df = analysis.results_df
             df.to_csv(intermediate_dir+"/space"+str(i)+".csv")
             opt_result = optimizer.get_result()
-            f = open(intermediate_dir+"/optimizer_result"+str(i)+".pkl", "wb")
+            f = open(intermediate_dir+"/optimizer_result"+str(i)+".pkl", "wb+")
             pickle.dump(opt_result, f)
         except Exception as e:
             error_file.write("Unable to complete trials in space " + str(i) + "... Exception below.")
