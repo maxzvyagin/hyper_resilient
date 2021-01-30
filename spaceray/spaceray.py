@@ -68,8 +68,8 @@ def run_experiment(args, func, mode="max", metric="average_res",
 
 
     for section in tqdm(space):
-        # Only using 1 initial point before beginning approximation with GP
-        optimizer = Optimizer(section, random_state=0, n_initial_points=1)
+        # Only using 8 initial point before beginning approximation with GP
+        optimizer = Optimizer(section, random_state=0, n_initial_points=8)
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
         try:
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
