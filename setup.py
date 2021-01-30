@@ -12,7 +12,7 @@ setuptools.setup(
     name='spaceray',
     license="MIT",
     description='Integration of HyperSpace with Ray Tune search automation.',
-    version='v0.1.5',
+    version='v0.1.6',
     long_description=README,
     url='https://github.com/maxzvyagin/spaceray',
     packages=setuptools.find_packages(),
