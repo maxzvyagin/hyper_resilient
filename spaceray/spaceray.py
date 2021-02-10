@@ -19,7 +19,7 @@ def get_trials(args):
         f = open(args.json, "r")
     except Exception as e:
         print(e)
-        print("ERROR: json file with hyperparameter bounds not found. Please use utilities/generate_hyperspace_json.py "
+        print("ERROR: json file with hyperparameter bounds not found. Please use utils.create_json() function "
               "to generate boundary file and try again.")
         sys.exit()
     bounds = json.load(f)
@@ -32,7 +32,8 @@ def get_trials(args):
 
 def run_experiment(args, func, mode="max", metric="average_res",
                           ray_dir="/tmp/ray_results/", cpu=8, gpu=1, start_space=None,
-                   project_name='default_project', group_name='default_group'):
+                   project_name='default_project', group_name='default_group', wandb_key='insert_your_key_here',
+                   save_all_results = False):
 
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
@@ -76,11 +77,11 @@ def run_experiment(args, func, mode="max", metric="average_res",
                                 resources_per_trial={'cpu': cpu, 'gpu': gpu},
                                 local_dir=ray_dir, callbacks=[WandbLoggerCallback(
                                     project=project_name, group=group_name,
-                                    api_key="b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7",
+                                    api_key=wandb_key,
                                     log_config=True)],
                                 config={"wandb": {
             "project": project_name,
-            "api_key": "b24709b3f0a9bf7eae4f3a30280c90cd38d1d5f7"}})
+            "api_key": wandb_key}})
             results.append(analysis)
             df = analysis.results_df
             df.to_csv(intermediate_dir+"/space"+str(i)+".csv")
@@ -100,11 +101,12 @@ def run_experiment(args, func, mode="max", metric="average_res",
 
     error_file.close()
 
-    # save results to specified csv file
-    all_pt_results = results[0].results_df
-    for i in range(1, len(results)):
-        all_pt_results = all_pt_results.append(results[i].results_df)
+    if save_all_results:
+        # save results to specified csv file
+        all_pt_results = results[0].results_df
+        for i in range(1, len(results)):
+            all_pt_results = all_pt_results.append(results[i].results_df)
 
-    all_pt_results.to_csv(args.out)
-    print("Ray Tune results have been saved at " + args.out + " .")
+        all_pt_results.to_csv(args.out)
+        print("Ray Tune results have been saved at " + args.out + " .")
     print("Error file has been saved at " + error_name + " .")
