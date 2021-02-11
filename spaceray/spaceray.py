@@ -33,7 +33,7 @@ def get_trials(args):
 def run_experiment(args, func, mode="max", metric="average_res",
                           ray_dir="/tmp/ray_results/", cpu=8, gpu=1, start_space=None,
                    project_name='default_project', group_name='default_group', wandb_key='insert_your_key_here',
-                   save_all_results = False):
+                   save_all_results = False, trial_name_creator=None):
 
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
@@ -74,7 +74,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
         try:
             analysis = tune.run(func, search_alg=search_algo, num_samples=int(args.trials),
-                                resources_per_trial={'cpu': cpu, 'gpu': gpu},
+                                resources_per_trial={'cpu': cpu, 'gpu': gpu}, trial_name_creator=trial_name_creator,
                                 local_dir=ray_dir, callbacks=[WandbLoggerCallback(
                                     project=project_name, group=group_name,
                                     api_key=wandb_key,
