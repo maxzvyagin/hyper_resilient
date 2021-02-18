@@ -110,7 +110,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
         else:
             n = 1
             print("NOTE: No GPUs found and num_splits not provided as argument. Defaulting to single split.")
-    space_splits = get_chunks(space, torch.cuda.device_count())
+    space_splits = get_chunks(space, n)
 
     futures = [run_specific_spaces.remote(s, bounds=bounds, func=func, intermediate_dir=intermediate_dir,
                                           trials=int(args.trials), mode=mode, metric=metric,
