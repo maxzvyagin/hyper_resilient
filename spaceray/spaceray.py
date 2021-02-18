@@ -97,7 +97,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
               "exist - files will be overwritten. Intermediate directory is " + intermediate_dir)
 
     space, bounds = get_trials(args)
-    space = list(zip(list(range(len(space)))), space)
+    space = list(zip(list(range(len(space))), space))
     if start_space:
         space = space[start_space:]
 
