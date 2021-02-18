@@ -40,7 +40,6 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
 
     """Given a chunk of spaces, run sequentially on ray tune. Spaces are given as pair, with 0th being space num"""
     global NUM_CPUS, NUM_GPUS
-    print("in ray remote")
     for i, value in spaces:
         # Only using 3 initial point before beginning approximation with GP
         optimizer = Optimizer(value, random_state=0, n_initial_points=3)
@@ -64,6 +63,7 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
             pickle.dump(opt_result, f)
         except:
             print("Failure to run space {}, contintuing with next spaces.".format(i))
+    return 0
 
 
 def get_chunks(l, n):
@@ -120,7 +120,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
                                           wandb_key=wandb_key, trial_name_creator=trial_name_creator,
                                           extra_data_dir=extra_data_dir) for s in space_splits]
 
-
+    print(ray.get(futures))
 
     print("Measured time needed to run trials: ")
     execution_time = (time.time() - start_time)
