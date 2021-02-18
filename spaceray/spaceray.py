@@ -100,6 +100,10 @@ def run_experiment(args, func, mode="max", metric="average_res",
         print("WARNING: Could not create directory for intermediate results. Check that the directory does not already"
               "exist - files will be overwritten. Intermediate directory is " + intermediate_dir)
 
+    global NUM_CPUS, NUM_GPUS
+    NUM_CPUS = cpu
+    NUM_GPUS = gpu
+
     space, bounds = get_trials(args)
     space = list(zip(list(range(len(space))), space))
     if start_space:
