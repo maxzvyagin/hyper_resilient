@@ -13,6 +13,7 @@ import pickle
 from ray.tune.logger import DEFAULT_LOGGERS
 from ray.tune.integration.wandb import WandbLoggerCallback
 import torch
+import traceback
 
 NUM_GPUS=None
 NUM_CPUS=None
@@ -62,6 +63,7 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
             f = open(intermediate_dir + "/optimizer_result" + str(i) + ".pkl", "wb+")
             pickle.dump(opt_result, f)
         except Exception as e:
+            print(traceback.format_exc())
             print(e)
             print("Failure to run space {}, contintuing with next spaces.".format(i))
     return 0
