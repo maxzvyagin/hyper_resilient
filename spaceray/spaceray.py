@@ -40,6 +40,7 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
 
     """Given a chunk of spaces, run sequentially on ray tune. Spaces are given as pair, with 0th being space num"""
     global NUM_CPUS, NUM_GPUS
+    print("in ray remote")
     for i, value in spaces:
         # Only using 3 initial point before beginning approximation with GP
         optimizer = Optimizer(value, random_state=0, n_initial_points=3)
