@@ -61,6 +61,8 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
             opt_result = optimizer.get_result()
             f = open(intermediate_dir + "/optimizer_result" + str(i) + ".pkl", "wb+")
             pickle.dump(opt_result, f)
+        except:
+            print("Failure to run space {}, contintuing with next spaces.".format(i))
 
 
 def get_chunks(l, n):
