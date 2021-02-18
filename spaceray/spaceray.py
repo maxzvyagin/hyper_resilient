@@ -62,6 +62,7 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
             f = open(intermediate_dir + "/optimizer_result" + str(i) + ".pkl", "wb+")
             pickle.dump(opt_result, f)
 
+
 def get_chunks(l, n):
     ### from https://gist.github.com/joyrexus/5571989
     size = len(l) / float(n)
