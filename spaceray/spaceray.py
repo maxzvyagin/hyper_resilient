@@ -12,6 +12,7 @@ import os
 import pickle
 from ray.tune.logger import DEFAULT_LOGGERS
 from ray.tune.integration.wandb import WandbLoggerCallback
+from ray.tune.suggest import ConcurrencyLimiter
 import torch
 import traceback
 
@@ -45,6 +46,7 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
         # Only using 3 initial point before beginning approximation with GP
         optimizer = Optimizer(value, random_state=0, n_initial_points=3)
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
+        search_algo = ConcurrencyLimiter(search_algo, max_concurrent=1)
         try:
             analysis = tune.run(tune.with_parameters(func, extra_data_dir=extra_data_dir), search_alg=search_algo,
                                 num_samples=trials,
