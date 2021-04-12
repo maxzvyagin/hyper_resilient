@@ -8,8 +8,8 @@ from argparse import ArgumentParser
 import os
 from ray import tune
 
-def model_train(config, extra_data_dir):
 
+def model_train(config, extra_data_dir):
     (ds_train, ds_test), ds_info = tfds.load(
         'mnist',
         split=['train', 'test'],
@@ -49,12 +49,13 @@ def model_train(config, extra_data_dir):
         metrics=[tf.keras.metrics.SparseCategoricalAccuracy()],
     )
 
-    res = model.fit(
+    model.fit(
         ds_train,
         ### Note this is where Ray Tune is plugging in a config parameter for a trial
         epochs=config['epochs'],
-        validation_data=ds_test,
     )
+
+    res = model.evaluate(ds_test)
 
     # in order to save the model we use the information provided in the extra data dir
     tf_model_path = os.path.join(extra_data_dir['results_dir'], 'tf_models')
@@ -62,12 +63,12 @@ def model_train(config, extra_data_dir):
         os.makedirs(tf_model_path)
     model.save(os.path.join(extra_data_dir['results_dir'], 'tf_models', 'tf_model' + tune.get_trial_name() + '.h5'))
 
-    return res
+    return res[1]
 
 
 if __name__ == "__main__":
     parser = ArgumentParser("Start bi model tuning with hyperspace and resiliency testing, "
-                                     "specify output csv file name.")
+                            "specify output csv file name.")
     parser.add_argument("-o", "--out", required=True)
     parser.add_argument("-t", "--trials")
     parser.add_argument("-j", "--json")
@@ -80,14 +81,3 @@ if __name__ == "__main__":
     spaceray.run_experiment(args, model_train, ray_dir="/tmp/", cpu=8,
                             start_space=int(args.start_space), mode="max", project_name=args.project_name,
                             group_name='benchmark', extra_data_dir={'results_dir': results})
-
-
-
-
-
-
-
-
-
-
-
