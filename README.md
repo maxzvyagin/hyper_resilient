@@ -1,7 +1,11 @@
 # SpaceRay
 Integration of HyperSpace with Ray Tune hyperparameter search functionality.
 
-Requires definition of objective function, number of trials, and hyperparameter bounds in JSON format. See `example/example.json`. Number of hyperspaces generated is dependent on number of parameters `n`, where the total number of spaces is `2^n`.
+Usage requirements: 
+- Definition of objective function which takes a config parameters, a dict supplied by Ray Tune. 
+- An `argparse Namespace` object which contains: args.trials (number of trials), args.out (intermediate results directory), and args.json (hyperparameter bounds file location in JSON format). See `example/example.json`. 
+
+Number of total hyperspaces generated and searched is dependent on number of parameters `n`, where the total number of spaces is `2^n`.
 
 Also, if you plan on using the Weight and Biases functionality with logging in your objective function, you must specify your own Weight and Biases API Key. Logging should be performed using the `@wandb.mixin` decorator from Ray Tune.
 More information on that can be found here: https://docs.ray.io/en/master/tune/tutorials/tune-wandb.html
