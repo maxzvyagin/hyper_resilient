@@ -6,6 +6,10 @@ Note that this processes that generated hyperspaces concurrently, meaning that e
 
 For more information on the HyperSpace library, see the original repo: https://github.com/yngtodd/hyperspace. __HyperSpace must be installed in order for SpaceRay to work properly.__
 
+_In addition, HyperSpace requires these two specific `scikit` versions to work properly_:
+- `scikit-optimize==0.5.2`
+- `scikit-learn==`
+
 To install SpaceRay, simply clone and run `pip install .` within the top level directory.
 
 To see an example of how to use the tuning function, check out the `example` folder.
