@@ -49,13 +49,17 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
         search_algo = ConcurrencyLimiter(search_algo, max_concurrent=1)
         try:
+            if wandb_key is not "insert_your_key_here":
+                callbacks = [WandbLoggerCallback(
+                    project=project_name, group=group_name,
+                    api_key=wandb_key,
+                    log_config=True)]
+            else:
+                callbacks=None
             analysis = tune.run(tune.with_parameters(func, extra_data_dir=extra_data_dir), search_alg=search_algo,
                                 num_samples=trials,
                                 resources_per_trial={'cpu': NUM_CPUS, 'gpu': NUM_GPUS}, trial_name_creator=trial_name_creator,
-                                local_dir=ray_dir, callbacks=[WandbLoggerCallback(
-                    project=project_name, group=group_name,
-                    api_key=wandb_key,
-                    log_config=True)],
+                                local_dir=ray_dir, callbacks=callbacks,
                                 config={"wandb": {
                                     "project": project_name,
                                     "api_key": wandb_key}})
@@ -81,7 +85,7 @@ def get_chunks(l, n):
 def run_experiment(args, func, mode="max", metric="average_res",
                           ray_dir="/tmp/ray_results/", cpu=8, gpu=1, start_space=None,
                    project_name='default_project', group_name='default_group', wandb_key='insert_your_key_here',
-                   save_all_results = False, trial_name_creator=None, extra_data_dir={}, num_splits=None):
+                trial_name_creator=None, extra_data_dir={}, num_splits=None):
 
     """ Generate hyperparameter spaces and run each space sequentially. """
     start_time = time.time()
