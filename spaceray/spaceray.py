@@ -118,7 +118,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
     else:
         if torch.cuda.device_count() > 0:
             n = torch.cuda.device_count()
-            print(n)
+            # print(n)
         else:
             n = 1
             print("NOTE: No GPUs found and num_splits not provided as argument. Defaulting to single split.")

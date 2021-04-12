@@ -63,12 +63,14 @@ def model_train(config, extra_data_dir):
         os.makedirs(tf_model_path)
     model.save(os.path.join(extra_data_dir['results_dir'], 'tf_models', 'tf_model' + tune.get_trial_name() + '.h5'))
 
+    result_dict = {'result': res[1]}
+    tune.report(**result_dict)
+
     return res[1]
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser("Start bi model tuning with hyperspace and resiliency testing, "
-                            "specify output csv file name.")
+    parser = ArgumentParser("Start mnist hyperparameter tuning.")
     parser.add_argument("-o", "--out", required=True)
     parser.add_argument("-t", "--trials")
     parser.add_argument("-j", "--json")
@@ -80,4 +82,4 @@ if __name__ == "__main__":
     results = os.path.join(main, results)
     spaceray.run_experiment(args, model_train, ray_dir="/tmp/", cpu=8,
                             start_space=int(args.start_space), mode="max", project_name=args.project_name,
-                            group_name='benchmark', extra_data_dir={'results_dir': results})
+                            group_name='benchmark', extra_data_dir={'results_dir': results}, metric='result')
