@@ -58,8 +58,8 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
                                     "project": project_name,
                                     "api_key": wandb_key}}
             else:
-                callbacks=None
-                config_dict = {}
+                callbacks = None
+                config_dict = None
             analysis = tune.run(tune.with_parameters(func, extra_data_dir=extra_data_dir), search_alg=search_algo,
                                 num_samples=trials,
                                 resources_per_trial={'cpu': NUM_CPUS, 'gpu': NUM_GPUS}, trial_name_creator=trial_name_creator,
