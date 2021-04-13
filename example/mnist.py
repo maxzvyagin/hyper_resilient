@@ -82,4 +82,5 @@ if __name__ == "__main__":
     results = os.path.join(main, results)
     spaceray.run_experiment(args, model_train, ray_dir="/tmp/", cpu=8,
                             start_space=int(args.start_space), mode="max", project_name=args.project_name,
-                            group_name='benchmark', extra_data_dir={'results_dir': results}, metric='result')
+                            group_name='benchmark', extra_data_dir={'results_dir': results}, metric='result',
+                            wandb_key='b15516a4c83d72c9e3bae8be723d76bc80369578')
