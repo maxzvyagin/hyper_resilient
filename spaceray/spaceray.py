@@ -49,7 +49,7 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
         search_algo = ConcurrencyLimiter(search_algo, max_concurrent=1)
         try:
-            if wandb_key is not "insert_your_key_here":
+            if wandb_key != "insert_your_key_here":
                 callbacks = [WandbLoggerCallback(
                     project=project_name, group=group_name,
                     api_key=wandb_key,
