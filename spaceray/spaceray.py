@@ -122,8 +122,13 @@ def run_experiment(args, func, mode="max", metric="average_res",
     if num_splits:
         n = num_splits
     else:
-        if torch.cuda.device_count() > 0:
-            n = torch.cuda.device_count()
+        try:
+            num_cluster_gpus = ray.cluster_resources()['GPU']
+            if num_cluster_gpus > 0:
+                n = num_cluster_gpu
+        except:
+            if torch.cuda.device_count() > 0:
+                n = torch.cuda.device_count()
             # print(n)
         else:
             n = 1
