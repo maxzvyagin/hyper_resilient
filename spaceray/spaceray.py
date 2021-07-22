@@ -118,7 +118,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
     space = list(zip(list(range(len(space))), space))
     if start_space:
         space = space[start_space:]
-
+    n = 1
     # generate space splits
     if num_splits:
         n = num_splits
@@ -131,9 +131,6 @@ def run_experiment(args, func, mode="max", metric="average_res",
             try:
                 if torch.cuda.device_count() > 0:
                     n = torch.cuda.device_count()
-            except:
-                n = 1
-                print("NOTE: No GPUs found and num_splits not provided as argument. Defaulting to single split.")
         else:
             n = 1
             print("NOTE: No GPUs found and num_splits not provided as argument. Defaulting to single split.")
