@@ -44,8 +44,9 @@ def run_specific_spaces(spaces, bounds, intermediate_dir, func, trials, mode, me
     """Given a chunk of spaces, run sequentially on ray tune. Spaces are given as pair, with 0th being space num"""
     global NUM_CPUS, NUM_GPUS
     for i, value in spaces:
-        # Only using 3 initial point before beginning approximation with GP
-        optimizer = Optimizer(value, random_state=0, n_initial_points=3)
+        # Using 10 initial points before beginning GP optimization, same as original Hyperspace implementation
+        # https://github.com/maxzvyagin/hyperspace/blob/f772f314a2fdbe7361e469e9002d501a542085bc/hyperspace/hyperdrive/skopt/hyperdrive.py#L108
+        optimizer = Optimizer(value, random_state=0, n_initial_points=10)
         search_algo = SkOptSearch(optimizer, list(bounds.keys()), metric=metric, mode=mode)
         search_algo = ConcurrencyLimiter(search_algo, max_concurrent=1)
         try:
