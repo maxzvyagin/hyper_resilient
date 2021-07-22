@@ -127,10 +127,9 @@ def run_experiment(args, func, mode="max", metric="average_res",
             num_cluster_gpus = ray.cluster_resources()['GPU']
             if num_cluster_gpus > 0:
                 n = num_cluster_gpu
-        except:
-            try:
-                if torch.cuda.device_count() > 0:
-                    n = torch.cuda.device_count()
+        except Exception as e:
+            if torch.cuda.device_count() > 0:
+                n = torch.cuda.device_count()
         else:
             n = 1
             print("NOTE: No GPUs found and num_splits not provided as argument. Defaulting to single split.")
