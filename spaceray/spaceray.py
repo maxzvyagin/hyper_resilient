@@ -20,10 +20,10 @@ import traceback
 NUM_GPUS=None
 NUM_CPUS=None
 
-def get_trials(args):
+def get_trials(json_file):
     # load hyperspace boundaries from json file
     try:
-        f = open(args.json, "r")
+        f = open(json_file, "r")
     except Exception as e:
         print(e)
         print("ERROR: json file with hyperparameter bounds not found. Please use utils.create_json() function "
@@ -85,7 +85,7 @@ def get_chunks(l, n):
     I = lambda i: int(round(i))
     return [l[I(size * i):I(size * (i + 1))] for i in range(n)]
 
-def run_experiment(args, func, mode="max", metric="average_res",
+def run_experiment(func, json_file, num_trials, out_directory, mode="max", metric="average_res",
                           ray_dir="/tmp/ray_results/", cpu=8, gpu=1, start_space=None,
                    project_name='default_project', group_name='default_group', wandb_key='insert_your_key_here',
                 trial_name_creator=None, extra_data_dir={}, num_splits=None):
@@ -102,19 +102,18 @@ def run_experiment(args, func, mode="max", metric="average_res",
             print("Ray.init failed twice.")
         print("WARNING: could not connect to existing Ray Cluster. Ignore warning if only running on single node.")
     # print(ray.cluster_resources())
-    intermediate_dir = args.out[:-4]
     try:
-        os.mkdir(intermediate_dir)
-        print("Created directory to save intermediate results at " + intermediate_dir)
+        os.mkdir(out_directory)
+        print("Created directory to save intermediate results at " + out_directory)
     except:
         print("WARNING: Could not create directory for intermediate results. Check that the directory does not already"
-              "exist - files will be overwritten. Intermediate directory is " + intermediate_dir)
+              "exist - files will be overwritten. Intermediate directory is " + out_directory)
 
     global NUM_CPUS, NUM_GPUS
     NUM_CPUS = cpu
     NUM_GPUS = gpu
 
-    space, bounds = get_trials(args)
+    space, bounds = get_trials(json_file)
     space = list(zip(list(range(len(space))), space))
     if start_space:
         space = space[start_space:]
@@ -136,7 +135,7 @@ def run_experiment(args, func, mode="max", metric="average_res",
     space_splits = get_chunks(space, n)
 
     futures = [run_specific_spaces.remote(s, bounds=bounds, func=func, intermediate_dir=intermediate_dir,
-                                          trials=int(args.trials), mode=mode, metric=metric,
+                                          trials=int(num_trials), mode=mode, metric=metric,
                                           ray_dir=ray_dir, project_name=project_name, group_name=group_name,
                                           wandb_key=wandb_key, trial_name_creator=trial_name_creator,
                                           extra_data_dir=extra_data_dir) for s in space_splits]

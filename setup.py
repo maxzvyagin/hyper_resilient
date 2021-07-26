@@ -12,12 +12,12 @@ setuptools.setup(
     name='spaceray',
     license="MIT",
     description='Integration of HyperSpace with Ray Tune search automation.',
-    version='v0.2.4',
+    version='v0.2.5',
     long_description=README,
     url='https://github.com/maxzvyagin/spaceray',
     packages=setuptools.find_packages(),
     python_requires=">=3.5",
-    install_requires=['scikit-learn', 'scikit-optimize', 'ray', "ray [tune]", "hyperspaces"],
+    install_requires=['scikit-learn', 'scikit-optimize', 'ray', "ray [tune]", "hyperspaces", "wandb"],
     classifiers=[
         # Trove classifiers
         # (https://pypi.python.org/pypi?%3Aaction=list_classifiers)
