@@ -3,8 +3,8 @@
 import setuptools
 
 
-with open('README.md') as f:
-    README = f.read()
+# with open('README.md') as f:
+#     README = f.read()
 
 setuptools.setup(
     author="Max Zvyagin",
@@ -13,7 +13,7 @@ setuptools.setup(
     license="MIT",
     description='Integration of HyperSpace with Ray Tune search automation.',
     version='v0.2.5',
-    long_description=README,
+    long_description='https://github.com/maxzvyagin/spaceray',
     url='https://github.com/maxzvyagin/spaceray',
     packages=setuptools.find_packages(),
     python_requires=">=3.5",
