@@ -3,7 +3,9 @@ Integration of HyperSpace with Ray Tune hyperparameter search functionality.
 
 Usage requirements: 
 - Definition of objective function which takes a config parameters, a dict supplied by Ray Tune. 
-- An `argparse Namespace` object which contains: args.trials (number of trials), args.out (intermediate results directory), and args.json (hyperparameter bounds file location in JSON format). See `example/example.json`. 
+- Location of hyperparameter bounds file in JSON format. See `example/example.json`
+- Number of trials to run per space 
+- Name of directory to create to store results
 
 Number of total hyperspaces generated and searched is dependent on number of parameters `n`, where the total number of spaces is `2^n`.
 
