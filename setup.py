@@ -3,8 +3,8 @@
 import setuptools
 
 
-with open('README.md') as f:
-    README = f.read()
+# with open('README.md') as f:
+#     README = f.read()
 
 setuptools.setup(
     author="Max Zvyagin",
