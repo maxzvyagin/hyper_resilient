@@ -18,6 +18,6 @@ For more information on the HyperSpace library, see the original repo: https://g
 
 _Note that HyperSpace has some dependencies on previous scikit versions which are not compatible. These dependencies are fixed in my fork of the project at https://github.com/maxzvyagin/hyperspace_.
 
-To install SpaceRay, simply clone and run `pip install .` within the top level directory.
+To install SpaceRay, simply clone and run `pip install .` within the top level directory. Or, to install without cloning the repo, run `pip install git+https://github.com/maxzvyagin/spaceray/`. 
 
 To see an example of how to use the tuning function, check out the `example` folder.
