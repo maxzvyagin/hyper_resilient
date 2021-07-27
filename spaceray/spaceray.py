@@ -134,7 +134,7 @@ def run_experiment(func, json_file, num_trials, out_directory, mode="max", metri
             print("NOTE: No GPUs found and num_splits not provided as argument. Defaulting to single split.")
     space_splits = get_chunks(space, n)
 
-    futures = [run_specific_spaces.remote(s, bounds=bounds, func=func, intermediate_dir=intermediate_dir,
+    futures = [run_specific_spaces.remote(s, bounds=bounds, func=func, intermediate_dir=out_directory,
                                           trials=int(num_trials), mode=mode, metric=metric,
                                           ray_dir=ray_dir, project_name=project_name, group_name=group_name,
                                           wandb_key=wandb_key, trial_name_creator=trial_name_creator,
